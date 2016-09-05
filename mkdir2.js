@@ -1,8 +1,10 @@
+#!/usr/bin/env node
+
 const program = require('commander');
-const error = require('commander.js-error');
+const fs = require('fs');
+
 
 let directory;
-
 
 program
   .version('1.0')   // --version is automated
@@ -21,6 +23,22 @@ if (!directory) {
   program.help();
 }
 
-if (program.mode) {
-  
+if (program.parents) {
+  console.error('Not implemented, exiting...');
+  process.exit(2);
+}
+
+if (program.verbose) {
+  if (program.mode) {
+    console.log('Creating directory', directory, 'with mode', program.mode, '...');
+  } else {
+    console.log('Creating directory', directory, '...');
+  }
+}
+
+try {
+  fs.mkdirSync(directory, program.mode);
+} catch (e) {
+  console.error(e.message);
+  process.exit(1);
 }
